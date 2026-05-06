@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Path
+from fastapi import FastAPI, Path, Query
 from pydantic import BaseModel, Field
 from typing import Optional
 
@@ -52,7 +52,7 @@ BOOKS: list[Book] = [
     Book(3, 'Master Endpoints', 'Bogdan', 'An awesome book', 5, "01022025"),
     Book(4, 'HP1', 'Author One', 'Book description', 2, "01042026"),
     Book(5, 'HP2', 'Author Two', 'Book description', 3, "10042026"),
-    Book(6, 'HP3', 'Author Three', 'Book description', 1, "01022026")
+    Book(6, 'HP3', 'Author Three', 'Book description', 1, "01022026"),
 ]
 
 
@@ -75,7 +75,7 @@ async def get_book_by_id(book_id: int = Path(gt=0)):
         
 
 @app.get('/book/')
-async def get_book_by_rating(book_rating: int):
+async def get_book_by_rating(book_rating: int = Query(gt=0, lt=6)):
     books_to_return = [book for book in BOOKS if book.rating == book_rating]
 
     return books_to_return
