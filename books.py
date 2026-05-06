@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Path
 from pydantic import BaseModel, Field
 from typing import Optional
 
@@ -68,7 +68,7 @@ async def get_all_books():
 
 
 @app.get('/book/{book_id}')
-async def get_book_by_id(book_id: int):
+async def get_book_by_id(book_id: int = Path(gt=0)):
     for book in BOOKS:
         if book.id == book_id:
             return book
@@ -81,7 +81,7 @@ async def get_book_by_rating(book_rating: int):
     return books_to_return
 
 @app.get('/books/{published_date}')
-async def get_book_by_published_date(published_date: str):
+async def get_book_by_published_date(published_date: str = Path(min_length=8, max_length=8)):
     books_to_return = [book for book in BOOKS if book.published_date == published_date]
 
     return books_to_return
@@ -103,7 +103,7 @@ async def update_book(book_request: BookRequest):
 
 
 @app.delete('/books/{book_id}')
-async def delete_book(book_id: int):
+async def delete_book(book_id: int = Path(gt=0)):
     for i in range(0, len(BOOKS)):
         if BOOKS[i].id == book_id:
             BOOKS.pop(i)
