@@ -28,6 +28,17 @@ class BookRequest(BaseModel):
     description: str = Field(min_length=3, max_length=50)
     rating: int = Field(gt=0, lt=6)
 
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "title": "A new book title. Must be at least three characters long.",
+                "author": "A new book author. Must be at least three characters long.",
+                "description": "A new book description. Must be between three and fifty characters long.",
+                "rating": "A new book rating. Must be an integer between (0, 6)."
+            }
+        }
+    }
+
 
 BOOKS: list[Book] = [
     Book(1, 'Computer Science Pro', 'Bogdan', 'A good book', 5),
